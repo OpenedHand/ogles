@@ -1,0 +1,5 @@
+This is a quick port of vincent ( http://ogl-es.sourceforge.net/ ) to
+Linux rejigging the build system to be more familiar and picking
+various linux bits from vincents svn branched.
+
+Its intended to be just a toy to help with clutter EGL/GLES backend work. 
