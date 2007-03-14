@@ -508,24 +508,35 @@ eglCopyBuffers (EGLDisplay dpy, EGLSurface surface, NativePixmapType target)
     int w = surface->GetWidth();
     int h = surface->GetHeight();
     XImage *img;
-    XWindowAttributes attr;
+    Window  root_return;		
+    int     x_return, y_return;
+    unsigned int width_return, height_return, border_width_return, depth;
     GC gc;
 
-    XGetWindowAttributes(disp, target, &attr);
+
+    XGetGeometry(disp, (Drawable)target, 
+		 &root_return,
+		 &x_return, 
+		 &y_return, 
+		 &width_return,
+		 &height_return, 
+		 &border_width_return,
+		 &depth);
+
 
 #ifdef HAVE_X11_EXTENSIONS_XSHM_H
     if (surface->GetSurfaceType() == SHMSTD)
     {
         img = surface->GetImage();
 
-        if (attr.depth != 16)
+        if (depth != 16)
         {
             U16 *cb = surface->GetColorBuffer();
             U32 *ib = (U32 *) img->data;
             U32 rgb;
             int x, y;
 
-            if (attr.depth != 24)
+            if (depth != 24)
             {
                 return EGL_FALSE;
             }
@@ -558,13 +569,13 @@ eglCopyBuffers (EGLDisplay dpy, EGLSurface surface, NativePixmapType target)
     {
         gc = XCreateGC(disp, target, 0, NULL);
 
-        if (attr.depth != 16)
+        if (depth != 16)
         {
             U16 *cb = surface->GetColorBuffer();
             U32 rgb;
             int x, y;
             
-            if (attr.depth != 24)
+            if (depth != 24)
             {
                 return EGL_FALSE;
             }

@@ -1,0 +1,5 @@
+2007-03-14  Matthew Allum  <mallum@openedhand.com>
+
+	* src/linux-x11/egl.cpp:
+	Make eglCopySurfaces work on Pixmaps as well as Windows.
+
